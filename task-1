@@ -1,0 +1,34 @@
+---task1 
+create database ineuron_sql_project;
+use ineuron_sql_project;
+create table shopping_history(
+product varchar not null,
+quantity integer not null,
+unit_price integer not null
+);
+---insert values into table --- 
+insert into shopping_history values('milk',3,10);
+insert into shopping_history values('bread',7,3);
+insert into shopping_history values('bread',5,2);
+insert into shopping_history values('biscuit',6,4);
+insert into shopping_history values('biscuit',3,15);
+insert into shopping_history values('choclate',4,10);
+insert into shopping_history values('choclate',3,5);
+insert into shopping_history values('choclate',6,8);
+insert into shopping_history values('biscuit',4,5);
+insert into shopping_history values('bread',9,6);
+
+--- to check all data in table---
+select * from shopping_history;
+
+---task-1 query---
+select product,sum(quantity*unit_price) as total_price from shopping_history
+where product in ('biscuit','choclate','bread','milk')
+group by product 
+order by product desc;
+
+--- version-2 query  --- task-1 
+
+SELECT PRODUCT, SUM(QUANTITY*UNIT_PRICE) AS TOTAL_PRICE FROM SHOPPING_HISTORY 
+GROUP BY PRODUCT
+order by product desc;

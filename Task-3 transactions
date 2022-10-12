@@ -1,0 +1,57 @@
+--- use ineuron_sql_project database from task-1 ---
+use ineuron_sql_project;
+---create table transactions---
+CREATE TABLE TRANSACTIONS(
+   Amount INTEGER NOT NULL,
+   `Date` DATE NOT NULL
+);
+--- insert values into transactions---
+INSERT INTO TRANSACTIONS VALUES (1000,'2020-01-06'),
+(-10,'2020-01-14'),
+(-75,'2020-01-20'),
+(-5,'2020-01-25'),
+(-4,'2020-01-29'),
+(2000,'2020-03-10'),
+(-75,'2020-03-12'),
+(-20,'2020-03-15'),
+(40,'2020-03-15'),
+(-50,'2020-03-17'),
+(200,'2020-10-10'),
+(-200,'2020-10-10');
+
+--- check all data of transactions table---
+
+select * from TRANSACTIONS;
+
+
+---USING VIEWS---
+
+---VIEW NAMED 'TOTAL'---
+CREATE OR REPLACE VIEW TOTAL
+AS
+SELECT SUM(AMOUNT) AS AMT FROM TRANSACTIONS;
+--- to check view data---
+select * from total;
+
+--- create another view for credit card fee [VIEW NAMED 'CC_CHARGE FOR CREDIT CARD FEE']---
+
+CREATE OR REPLACE VIEW  CC_CHARGE
+AS
+SELECT (12 - COUNT(DISTINCT MONTH(`DATE`))) * 5 AS CHARGE 
+FROM TRANSACTIONS
+WHERE AMOUNT<0
+GROUP BY MONTH(`Date`)
+HAVING SUM(AMOUNT)>=-100 AND COUNT(MONTH(`DATE`))>=3;
+
+--- to check view data output ---
+
+select * from CC_CHARGE;
+
+--- Final TASK 3 QUERY USING SUBQUERY (INNER QUERY IN SELECT CLAUSE) ---
+
+SELECT SUM(AMOUNT)-(SELECT (12 - COUNT(DISTINCT MONTH(`DATE`))) * 5 AS CHARGE 
+FROM TRANSACTIONS
+WHERE AMOUNT<0
+GROUP BY MONTH(`Date`)
+HAVING SUM(AMOUNT)>=-100 AND COUNT(MONTH(`DATE`))>=3) AS BALANCE
+FROM TRANSACTIONS;

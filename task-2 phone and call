@@ -1,0 +1,42 @@
+ ---task-2 telecommunications company phone and call---
+ ---use database of 1st task ---
+use ineuron_sql_project;
+---create table phones---
+create table phones (
+name varchar(20) not null unique,
+phone_number integer not null unique
+);
+--- insert values into phones---
+insert into phones values('jack',1234),
+('lena',3333),
+('mark',9999),
+('anna',7582);
+--- check data into table---
+select * from phones;
+
+--- create table calls---
+create table calls (
+id integer not null,
+caller integer not null,
+callee integer not null,
+duration integer not null,
+unique(id)
+);
+--- insert values into calls---
+
+insert into calls values(25,1234,7582,8),
+(7,9999,7582,1),
+(18,9999,3333,4),
+(2,7582,3333,3),
+(3,3333,1234,1),
+(21,3333,1234,1);
+--- check data into table---
+select * from calls;
+
+---task-2 query --- 
+
+ SELECT P.NAME FROM PHONES P
+ JOIN CALLS C ON P.PHONE_NUMBER=C.CALLER OR P.PHONE_NUMBER=C.CALLEE
+ GROUP BY P.NAME
+ HAVING SUM(C.DURATION)>=10
+ ORDER BY P.NAME;
